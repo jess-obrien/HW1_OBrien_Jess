@@ -1,0 +1,29 @@
+---
+title: "STAA 566 HW 1"
+author: "Jessica O'Brien"
+date: "1/29/2022"
+output: html_document
+knit: (function(input_file, encoding){
+  out_dir <- 'docs'; 
+  rmarkdown::render(input_file,
+  encoding=encoding,
+  output_file=file.path(dirname(input_file), out_dir, 'index.html'))})
+---
+```{r}
+data<-read.csv("TreeCityUSA.csv") #Read data in
+```
+
+```{r}
+library(tidyverse)
+p_gm <- ggplot(subset(data, region9 %in% c("Pacific", "Middle Atlantic")),
+               mapping=aes (x=hm_val_med,
+                              y=hh_inc_med,
+                              color=region9))
+p_gm <- p_gm + geom_point()
+p_gm <- p_gm + ylab ("Median Household Income") + xlab("Median Home Value")+scale_x_continuous(labels = scales::dollar_format())+ scale_y_continuous(labels=scales::dollar_format()) + ggtitle("Median Household Income by Home Value")
+p_gm <- p_gm + labs(color="US Region")
+p_gm<- p_gm + geom_point(alpha = 0.3) + stat_smooth(method = "lm")
+
+p_gm
+```
+
